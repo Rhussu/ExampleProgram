@@ -9,6 +9,7 @@ import java.awt.event.KeyListener;
 import java.util.Random;
 
 public class PanelPrincipal extends JPanel {
+    private int tick = 16;
     private Prota p;
     private Thread t;
     public final int ALTURA = 400;
@@ -42,6 +43,7 @@ public class PanelPrincipal extends JPanel {
             @Override
             public void run() {
                 while(true){
+                    long startTime = System.currentTimeMillis(); // O también puedes usar System.currentTimeMillis();
                     repaint();
                     if((new Random()).nextInt(50) == 1) {
                         if(cubosAndantes < 2) {
@@ -49,8 +51,15 @@ public class PanelPrincipal extends JPanel {
                         }
                     }
                     try {
-                        Thread.sleep(1000/60);
+                        Thread.sleep(tick);
                     } catch (InterruptedException ex) {}
+                    long elapsedTime = System.currentTimeMillis() - startTime;
+                    if(elapsedTime > 18) {
+                        tick--;
+                    } else if(elapsedTime < 14) {
+                        tick++;
+                    }
+                    System.out.println("ticks actuales: " + tick + ", y un tiempo total de: " + elapsedTime);
                 }
             }
         });
